@@ -10,6 +10,7 @@ function Redis (port, host, db, auth) {
   this.port = port || 6379
   this.host = host || 'localhost'
   this.db = String(db || 0)
+  this.auth = auth || ''
   return this
 }
 
@@ -44,6 +45,7 @@ Redis.prototype.stream = function (cmd, key, curry /* moar? */) {
     ;
   stream.curry = curry 
   stream.redis = _redis
+  stream.redis.write(Redis.parse([ 'auth', this.auth ]))
   stream.redis.write(Redis.parse([ 'select', this.db ]))
   return stream
 
